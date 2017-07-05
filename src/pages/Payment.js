@@ -16,16 +16,18 @@ const StyledContainer = styled.div`
 `;
 
 const StyledLogo = styled.img`
-  width: 100%;
-  padding: 50px;
+  padding: 30px;
+  margin: 0 auto;
+  width: 70%;
 `;
 
 const StyledName = styled.p`
   font-size: ${fonts.h3};
+  margin-bottom: 20px;
 `;
 
 const StyledProfile = styled.img`
-  width: 25%;
+  width: 30%;
   border-radius: 50%;
 `;
 
@@ -65,7 +67,7 @@ const StyledAmount = styled.div`
 `;
 
 const StyledConversion = styled.div`
-  font-size: ${fonts.h3};
+  font-size: ${fonts.h4};
   opacity: 0.5;
 `;
 
@@ -83,7 +85,8 @@ const StyledButton = styled.button`
   font-weight: 700;
   width: 30%;
   font-size: 20px;
-  margin-top: 25px;
+  margin-top: 30px;
+  margin-bottom: 20px;
   padding: 10px;
   border-radius: 20px;
   background-image: linear-gradient(to left, rgb(${colors.yellow}), rgb(${colors.blue}));
