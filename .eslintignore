@@ -1,0 +1,6 @@
+src/libraries
+src/__tests__
+/scripts
+/config
+/public
+/schema
