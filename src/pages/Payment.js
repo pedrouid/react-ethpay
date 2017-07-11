@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router';
 import bitpayLogo from '../assets/logo.svg';
 import swapIcon from '../assets/swap.svg';
 import profileImage from '../assets/profile.jpg';
@@ -151,6 +152,7 @@ class Payment extends Component {
         </StyledConversion>
         <StyledButton>{'Next'}</StyledButton>
       </StyledCard>
+      <Link to="/chart">View chart</Link>
     </StyledContainer>
   );
 }
