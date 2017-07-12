@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
+import Spinner from './Spinner';
 import { transitions } from '../styles';
 
 const fadeIn = keyframes`
@@ -18,14 +19,18 @@ const StyledWrapper = styled.div`
   animation: 0.5s ease 0s normal 1 ${fadeIn};
 `;
 
-const FadeIn = ({ children, ...otherProps }) => (
+const Wrapper = ({ fetching, children, ...otherProps }) => (
   <StyledWrapper {...otherProps}>
-    {children}
+    {(fetching)
+      ? <Spinner white />
+      : children
+    }
   </StyledWrapper>
 );
 
-FadeIn.propTypes = {
+Wrapper.propTypes = {
+  fetching: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired
 };
 
-export default FadeIn;
+export default Wrapper;

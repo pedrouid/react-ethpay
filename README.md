@@ -1,6 +1,6 @@
-## BITPAY
+## REACT-BITPAY
 
-A simple Blockhain.info Wallet API interface for requesting and fullfilling payments using Bitcoin. (Work in Progress)
+A simple Bitpay interface for requesting and fullfilling payments using Bitcoin. (Work in Progress)
 
 ### `npm start`
 

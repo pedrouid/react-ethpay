@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import FadeIn from './components/FadeIn';
 import Payment from './pages/Payment';
 import ChartView from './pages/ChartView';
 import NotFound from './pages/NotFound';
 
-const StyledWrapper = styled(FadeIn)`
+const StyledWrapper = styled.div`
   height: 100vh;
   width: 100vw;
   text-align: center;

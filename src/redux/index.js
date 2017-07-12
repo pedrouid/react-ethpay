@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { authenticationReducer } from './_authentication';
+import { bitpayReducer } from './_bitpay';
 
 export default combineReducers({
-  authentication: authenticationReducer
+  bitpay: bitpayReducer
 });

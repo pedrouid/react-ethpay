@@ -23,9 +23,16 @@ export const apiLogin = (email = '', password = '') =>
   api.post('/session', { email, password });
 
 
-  /**
-   * @desc logout authed user session
-   * @return {Promise}
-   */
+/**
+ * @desc logout authed user session
+ * @return {Promise}
+ */
 export const apiLogout = () =>
   api.delete('/session');
+
+/**
+ * @desc logout authed user session
+ * @return {Promise}
+ */
+export const apiGetRates = () =>
+  api.get('https://bitpay.com/api/rates');

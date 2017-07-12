@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Link } from 'react-router';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Column from '../components/Column';
+import Wrapper from '../components/Wrapper';
 import bitpayLogo from '../assets/logo.svg';
 import swapIcon from '../assets/swap.svg';
 import profileImage from '../assets/profile.jpg';
+import { bitpayGetRates } from '../redux/_bitpay';
 import { fonts, colors } from '../styles';
-
-const StyledContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
 
 const StyledLogo = styled.img`
   padding: 30px;
@@ -95,17 +90,18 @@ const StyledButton = styled.button`
 
 class Payment extends Component {
   state = {
-    inputValue: '0.07520000',
+    inputValue: '0.05',
     conversionValue: '',
+    currency: 'USD',
     crypto: true
   }
 
   componentDidMount = () => {
-    this.updateConversion();
+    this.props.bitpayGetRates();
   }
 
   updateConversion = (value) => {
-    const conversion = 2589.07;
+    const conversion = this.props.selected;
     const inputValue = value || this.state.inputValue;
     if (this.state.crypto) {
       const result = (Number(inputValue) * conversion).toFixed(2);
@@ -132,29 +128,42 @@ class Payment extends Component {
   }
 
   render = () => (
-    <StyledContainer>
-      <StyledLogo src={bitpayLogo} alt="BitPay" />
-      <StyledCard>
-        <StyledProfile src={profileImage} alt="Profile" />
-        <StyledName>Send to {'Pedro Gomes'}</StyledName>
-        <StyledAmount>
-          <StyledSymbol>{(this.state.crypto) ? '฿' : '$'}</StyledSymbol>
-          <StyledInput
-            type="text"
-            value={this.state.inputValue}
-            onChange={this.updateInput}
-          />
-        </StyledAmount>
-        <StyledConversion>
-          <StyledSymbol>{(this.state.crypto) ? '$' : '฿'}</StyledSymbol>
-          <StyledConversionValue>{this.state.conversionValue}</StyledConversionValue>
-          <StyledToggleCrypto src={swapIcon} onClick={this.toggleCrypto} />
-        </StyledConversion>
-        <StyledButton>{'Next'}</StyledButton>
-      </StyledCard>
-      <Link to="/chart">View chart</Link>
-    </StyledContainer>
+    <Wrapper fetching={this.props.fetching}>
+      <Column>
+        <StyledLogo src={bitpayLogo} alt="BitPay" />
+        <StyledCard>
+          <StyledProfile src={profileImage} alt="Profile" />
+          <StyledName>Send to {'Pedro Gomes'}</StyledName>
+          <StyledAmount>
+            <StyledSymbol>{(this.state.crypto) ? '฿' : '$'}</StyledSymbol>
+            <StyledInput
+              type="text"
+              value={this.state.inputValue}
+              onChange={this.updateInput}
+            />
+          </StyledAmount>
+          <StyledConversion>
+            <StyledSymbol>{(this.state.crypto) ? '$' : '฿'}</StyledSymbol>
+            <StyledConversionValue>{this.state.conversionValue}</StyledConversionValue>
+            <StyledToggleCrypto src={swapIcon} onClick={this.toggleCrypto} />
+          </StyledConversion>
+          <StyledButton>{'Next'}</StyledButton>
+        </StyledCard>
+        <Link to="/chart">{'View chart'}</Link>
+      </Column>
+    </Wrapper>
   );
 }
 
-export default Payment;
+Payment.propTypes = {
+  bitpayGetRates: PropTypes.func.isRequired,
+  fetching: PropTypes.bool.isRequired,
+  selected: PropTypes.number.isRequired
+};
+
+const reduxProps = ({ bitpay }) => ({
+  fetching: bitpay.fetching,
+  selected: bitpay.selected
+});
+
+export default connect(reduxProps, { bitpayGetRates })(Payment);
