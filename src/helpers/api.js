@@ -32,7 +32,8 @@ export const apiLogout = () =>
 
 /**
  * @desc logout authed user session
+ * @param {String} [code='USD']
  * @return {Promise}
  */
-export const apiGetRates = () =>
-  api.get('https://bitpay.com/api/rates');
+export const apiGetRates = (code = 'USD') =>
+  api.get(`https://bitpay.com/api/rates/${code}`);

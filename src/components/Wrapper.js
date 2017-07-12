@@ -17,6 +17,10 @@ const StyledWrapper = styled.div`
   transition: ${transitions.base};
   will-change: transform, opacity;
   animation: 0.5s ease 0s normal 1 ${fadeIn};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const Wrapper = ({ fetching, children, ...otherProps }) => (
@@ -29,8 +33,12 @@ const Wrapper = ({ fetching, children, ...otherProps }) => (
 );
 
 Wrapper.propTypes = {
-  fetching: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  fetching: PropTypes.bool
+};
+
+Wrapper.defaultProps = {
+  fetching: false
 };
 
 export default Wrapper;
