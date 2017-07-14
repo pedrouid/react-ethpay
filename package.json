@@ -5,10 +5,12 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.1",
+    "chart.js": "^2.6.0",
     "husky": "^0.13.3",
     "moment": "^2.18.1",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
+    "react-chartjs": "^0.8.0",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.1",
@@ -68,8 +70,12 @@
     "precommit": "yarn lint"
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.{js,jsx}"],
-    "setupFiles": ["<rootDir>/config/polyfills.js"],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "setupFiles": [
+      "<rootDir>/config/polyfills.js"
+    ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.js?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).js?(x)"
@@ -81,13 +87,17 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-    "transformIgnorePatterns": ["[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"],
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
     }
   },
   "babel": {
-    "presets": ["react-app"]
+    "presets": [
+      "react-app"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"

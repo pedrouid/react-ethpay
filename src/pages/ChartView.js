@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Line as LineChart } from 'react-chartjs';
+import Wrapper from '../components/Wrapper';
+import { bitcoinGetHistory } from '../redux/_bitcoin';
+import { colors } from '../styles';
 
-const StyledContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const StyledHeader = styled.h1`
+  color: rgb(${colors.white});
 `;
 
 class ChartView extends Component {
   state = {
+    period: 'monthly',
+    selected: 'USD',
+    average: true
   }
-
+  componentDidMount = () => {
+    this.props.bitcoinGetHistory(this.state.selected, this.state.period, this.state.average);
+  }
   render = () => (
-    <StyledContainer>
-      Chart
-    </StyledContainer>
+    <Wrapper fetching={this.props.fetching}>
+      <StyledHeader>{'Bitcoin History'}</StyledHeader>
+      <LineChart data={this.props.history} width="1000" height="600" />
+    </Wrapper>
   );
 }
 
-export default ChartView;
+ChartView.propTypes = {
+  bitcoinGetHistory: PropTypes.func.isRequired,
+  fetching: PropTypes.bool.isRequired,
+  history: PropTypes.array.isRequired
+};
+
+const reduxProps = ({ bitcoin }) => ({
+  fetching: bitcoin.fetching,
+  history: bitcoin.history
+});
+
+export default connect(reduxProps, { bitcoinGetHistory })(ChartView);

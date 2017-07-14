@@ -14,26 +14,18 @@ const api = axios.create({
 });
 
 /**
- * @desc validate and login user session
- * @param  {String} [email='']
- * @param  {String} [password='']
- * @return {Promise}
- */
-export const apiLogin = (email = '', password = '') =>
-  api.post('/session', { email, password });
-
-
-/**
- * @desc logout authed user session
- * @return {Promise}
- */
-export const apiLogout = () =>
-  api.delete('/session');
-
-/**
- * @desc logout authed user session
+ * @desc Bitcoin Average Ticker Data
  * @param {String} [code='USD']
  * @return {Promise}
  */
-export const apiGetRates = (code = 'USD') =>
-  api.get(`https://bitpay.com/api/rates/${code}`);
+export const apiGetRate = (code = 'USD') =>
+  api.get(`https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC${code}`);
+
+
+/**
+ * @desc Bitoin Average Historical Data
+ * @param {String} [code='USD']
+ * @return {Promise}
+ */
+export const apiGetHistory = (code = 'USD', period = 'monthly') =>
+  api.get(`https://apiv2.bitcoinaverage.com/indices/global/history/BTC${code}?period=${period}`);

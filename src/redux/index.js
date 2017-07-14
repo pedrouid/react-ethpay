@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { bitpayReducer } from './_bitpay';
+import { bitcoinReducer } from './_bitcoin';
 
 export default combineReducers({
-  bitpay: bitpayReducer
+  bitcoin: bitcoinReducer
 });

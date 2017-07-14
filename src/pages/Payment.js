@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Card from '../components/Card';
 import Column from '../components/Column';
 import Wrapper from '../components/Wrapper';
 import Spinner from '../components/Spinner';
-import bitpayLogo from '../assets/logo.svg';
+import logo from '../assets/logo.svg';
 import profileImage from '../assets/profile.jpg';
-import { bitpayGetRates } from '../redux/_bitpay';
+import { bitcoinGetRate } from '../redux/_bitcoin';
 import { fonts, colors } from '../styles';
 
 const StyledLogo = styled.img`
@@ -25,11 +26,6 @@ const StyledName = styled.p`
 const StyledProfile = styled.img`
   width: 30%;
   border-radius: 50%;
-`;
-
-const StyledCard = styled.div`
-  background: rgba(${colors.white}, 0.05);
-  padding: 50px 20px;
 `;
 
 const StyledInput = styled.input`
@@ -74,8 +70,10 @@ const StyledSymbol = styled.span`
   font-size: 1.2em;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled.div`
   color: rgb(${colors.white});
+  display: inline-block;
+  cursor: pointer;
   font-weight: 700;
   width: 30%;
   font-size: 20px;
@@ -86,14 +84,16 @@ const StyledButton = styled.button`
   background-image: linear-gradient(to left, rgb(${colors.yellow}), rgb(${colors.blue}));
 `;
 
+
 class Payment extends Component {
   state = {
     input: '0.05249432',
     conversion: '',
-    code: 'USD'
+    code: 'USD',
+    backView: false
   }
   componentDidMount = () => {
-    this.props.bitpayGetRates(this.state.code);
+    this.props.bitcoinGetRate(this.state.code);
   }
 
   componentWillReceiveProps = (newProps) => {
@@ -117,38 +117,50 @@ class Payment extends Component {
   toggleCode = () => {
     if (this.state.code === 'USD') {
       this.setState({ code: 'EUR' });
-      this.props.bitpayGetRates('EUR');
+      this.props.bitcoinGetRate('EUR');
     } else {
       this.setState({ code: 'USD' });
-      this.props.bitpayGetRates('USD');
+      this.props.bitcoinGetRate('USD');
     }
   }
 
   render = () => (
     <Wrapper>
       <Column>
-        <StyledLogo src={bitpayLogo} alt="BitPay" />
-        <StyledCard>
-          <StyledProfile src={profileImage} alt="Profile" />
-          <StyledName>{'Send to Pedro Gomes'}</StyledName>
-          <StyledAmount>
-            <StyledSymbol>{'฿'}</StyledSymbol>
-            <StyledInput
-              type="text"
-              value={this.state.input}
-              onChange={this.updateInput}
-            />
-          </StyledAmount>
-          <StyledConversion onClick={this.toggleCode}>
-            {this.props.fetching
-              ? <Spinner white />
-              : <div>
-                <StyledSymbol>{(this.state.code === 'USD') ? '$' : '€'}</StyledSymbol>
-                <StyledConversionValue>{this.state.conversion}</StyledConversionValue>
-              </div>}
-          </StyledConversion>
-          <StyledButton>{'Next'}</StyledButton>
-        </StyledCard>
+        <StyledLogo src={logo} alt="BitPay" />
+        <Card
+          invert={this.state.backView}
+          frontView={
+            <div>
+              <StyledProfile src={profileImage} alt="Profile" />
+              <StyledName>{'Send to Pedro Gomes'}</StyledName>
+              <StyledAmount>
+                <StyledSymbol>{'฿'}</StyledSymbol>
+                <StyledInput
+                  type="text"
+                  value={this.state.input}
+                  onChange={this.updateInput}
+                />
+              </StyledAmount>
+              <StyledConversion onClick={this.toggleCode}>
+                {this.props.fetching
+                ? <Spinner white />
+                : <div>
+                  <StyledSymbol>{(this.state.code === 'USD') ? '$' : '€'}</StyledSymbol>
+                  <StyledConversionValue>{this.state.conversion}</StyledConversionValue>
+                </div>}
+              </StyledConversion>
+              <StyledButton onClick={() => this.setState({ backView: true })}>
+                {'Next'}
+              </StyledButton>
+            </div>
+          }
+          backView={
+            <div onClick={() => this.setState({ backView: false })}>
+              {'This is back view'}
+            </div>
+          }
+        />
         <Link to="/chart">{'View chart'}</Link>
       </Column>
     </Wrapper>
@@ -156,14 +168,14 @@ class Payment extends Component {
 }
 
 Payment.propTypes = {
-  bitpayGetRates: PropTypes.func.isRequired,
+  bitcoinGetRate: PropTypes.func.isRequired,
   fetching: PropTypes.bool.isRequired,
   rate: PropTypes.number.isRequired
 };
 
-const reduxProps = ({ bitpay }) => ({
-  fetching: bitpay.fetching,
-  rate: bitpay.rate
+const reduxProps = ({ bitcoin }) => ({
+  fetching: bitcoin.fetching,
+  rate: bitcoin.rate
 });
 
-export default connect(reduxProps, { bitpayGetRates })(Payment);
+export default connect(reduxProps, { bitcoinGetRate })(Payment);
