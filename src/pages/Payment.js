@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import Column from '../components/Column';
 import Wrapper from '../components/Wrapper';
@@ -64,7 +63,6 @@ const StyledAmount = styled.div`
   padding-bottom: 10px;
 `;
 
-
 const StyledSymbol = styled.span`
   font-weight: 700;
   font-size: 1.2em;
@@ -84,23 +82,22 @@ const StyledButton = styled.div`
   background-image: linear-gradient(to left, rgb(${colors.yellow}), rgb(${colors.blue}));
 `;
 
-
 class Payment extends Component {
   state = {
     input: '0.05249432',
     conversion: '',
     code: 'USD',
     backView: false
-  }
+  };
   componentDidMount = () => {
     this.props.bitcoinGetRate(this.state.code);
-  }
+  };
 
-  componentWillReceiveProps = (newProps) => {
+  componentWillReceiveProps = newProps => {
     if (!this.props.rate) {
       this.updateConversion(this.state.input, newProps.rate);
     }
-  }
+  };
 
   updateConversion = (input, rate) =>
     this.setState({ conversion: (Number(input) * rate).toFixed(2) });
@@ -112,7 +109,7 @@ class Payment extends Component {
     if (input.split('.')[1].length > 8) return null;
     this.setState({ input });
     this.updateConversion(input, this.props.rate);
-  }
+  };
 
   toggleCode = () => {
     if (this.state.code === 'USD') {
@@ -122,9 +119,9 @@ class Payment extends Component {
       this.setState({ code: 'USD' });
       this.props.bitcoinGetRate('USD');
     }
-  }
+  };
 
-  render = () => (
+  render = () =>
     <Wrapper>
       <Column>
         <StyledLogo src={logo} alt="BitPay" />
@@ -133,22 +130,26 @@ class Payment extends Component {
           frontView={
             <div>
               <StyledProfile src={profileImage} alt="Profile" />
-              <StyledName>{'Send to Pedro Gomes'}</StyledName>
+              <StyledName>
+                {'Send to Pedro Gomes'}
+              </StyledName>
               <StyledAmount>
-                <StyledSymbol>{'฿'}</StyledSymbol>
-                <StyledInput
-                  type="text"
-                  value={this.state.input}
-                  onChange={this.updateInput}
-                />
+                <StyledSymbol>
+                  {'฿'}
+                </StyledSymbol>
+                <StyledInput type="text" value={this.state.input} onChange={this.updateInput} />
               </StyledAmount>
               <StyledConversion onClick={this.toggleCode}>
                 {this.props.fetching
-                ? <Spinner white />
-                : <div>
-                  <StyledSymbol>{(this.state.code === 'USD') ? '$' : '€'}</StyledSymbol>
-                  <StyledConversionValue>{this.state.conversion}</StyledConversionValue>
-                </div>}
+                  ? <Spinner white />
+                  : <div>
+                      <StyledSymbol>
+                        {this.state.code === 'USD' ? '$' : '€'}
+                      </StyledSymbol>
+                      <StyledConversionValue>
+                        {this.state.conversion}
+                      </StyledConversionValue>
+                    </div>}
               </StyledConversion>
               <StyledButton onClick={() => this.setState({ backView: true })}>
                 {'Next'}
@@ -161,10 +162,8 @@ class Payment extends Component {
             </div>
           }
         />
-        <Link to="/chart">{'View chart'}</Link>
       </Column>
-    </Wrapper>
-  );
+    </Wrapper>;
 }
 
 Payment.propTypes = {
