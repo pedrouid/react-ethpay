@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { bitcoinReducer } from './_bitcoin';
+import ethereum from './_ethereum';
 
 export default combineReducers({
-  bitcoin: bitcoinReducer
+  ethereum
 });

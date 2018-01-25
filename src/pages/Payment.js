@@ -7,8 +7,9 @@ import Column from '../components/Column';
 import Wrapper from '../components/Wrapper';
 import Spinner from '../components/Spinner';
 import logo from '../assets/logo.svg';
+import symbol from '../libraries/symbol.json';
 import profileImage from '../assets/profile.jpg';
-import { bitcoinGetRate } from '../redux/_bitcoin';
+import { ethereumGetRate } from '../redux/_ethereum';
 import { fonts, colors } from '../styles';
 
 const StyledLogo = styled.img`
@@ -86,70 +87,72 @@ class Payment extends Component {
   state = {
     input: '0.05249432',
     conversion: '',
-    code: 'USD',
+    selected: 'USD',
     backView: false
   };
   componentDidMount = () => {
-    this.props.bitcoinGetRate(this.state.code);
+    this.props.ethereumGetRate();
   };
 
-  componentWillReceiveProps = newProps => {
-    if (!this.props.rate) {
-      this.updateConversion(this.state.input, newProps.rate);
+  componentWillReceiveProps(newProps, newState) {
+    this.checkUpdate(newProps, newState);
+  }
+
+  componentWillUpdate(newProps, newState) {
+    console.log(newState);
+    this.checkUpdate(newProps, newState);
+  }
+
+  checkUpdate = (newProps, newState) => {
+    if (newState.selected !== this.state.selected || newState.input !== this.state.input) {
+      const input = newState.input || this.state.input;
+      const selected = newState.selected || this.state.selected;
+      this.updateConversion(input, newProps.rates[selected], selected);
     }
   };
 
-  updateConversion = (input, rate) =>
-    this.setState({ conversion: (Number(input) * rate).toFixed(2) });
+  updateConversion = (input, rate, selected) => {
+    const decimals = selected === 'ETH' || selected === 'BTC' ? 8 : 2;
+    this.setState({
+      conversion: (Number(input) * rate).toFixed(decimals)
+    });
+  };
 
   updateInput = ({ target }) => {
-    let input = target.value;
-    if (input.match(/[a-z]/i)) return null;
-    if (input.indexOf('.') === -1) input += '.00';
-    if (input.split('.')[1].length > 8) return null;
-    this.setState({ input });
-    this.updateConversion(input, this.props.rate);
+    this.setState({ input: target.value });
   };
 
   toggleCode = () => {
-    if (this.state.code === 'USD') {
-      this.setState({ code: 'EUR' });
-      this.props.bitcoinGetRate('EUR');
-    } else {
-      this.setState({ code: 'USD' });
-      this.props.bitcoinGetRate('USD');
-    }
+    const currencies = Object.keys(this.props.rates);
+    const active = currencies.indexOf(this.state.selected);
+    const idx = active + 1 < currencies.length ? active + 1 : 0;
+    const selected = currencies[idx];
+    this.setState({ selected });
   };
 
-  render = () =>
+  render = () => (
     <Wrapper>
       <Column>
-        <StyledLogo src={logo} alt="BitPay" />
+        <StyledLogo src={logo} alt="EthPay" />
         <Card
           invert={this.state.backView}
           frontView={
             <div>
               <StyledProfile src={profileImage} alt="Profile" />
-              <StyledName>
-                {'Send to Pedro Gomes'}
-              </StyledName>
+              <StyledName>{'Send to Pedro Gomes'}</StyledName>
               <StyledAmount>
-                <StyledSymbol>
-                  {'฿'}
-                </StyledSymbol>
+                <StyledSymbol>{symbol.ETH}</StyledSymbol>
                 <StyledInput type="text" value={this.state.input} onChange={this.updateInput} />
               </StyledAmount>
               <StyledConversion onClick={this.toggleCode}>
-                {this.props.fetching
-                  ? <Spinner white />
-                  : <div>
-                      <StyledSymbol>
-                        {this.state.code === 'USD' ? '$' : '€'}
-                      </StyledSymbol>
-                      <StyledConversionValue>
-                        {this.state.conversion}
-                      </StyledConversionValue>
-                    </div>}
+                {this.props.fetching ? (
+                  <Spinner white />
+                ) : (
+                  <div>
+                    <StyledSymbol>{symbol[this.state.selected]}</StyledSymbol>
+                    <StyledConversionValue>{this.state.conversion}</StyledConversionValue>
+                  </div>
+                )}
               </StyledConversion>
               <StyledButton onClick={() => this.setState({ backView: true })}>
                 {'Next'}
@@ -157,24 +160,23 @@ class Payment extends Component {
             </div>
           }
           backView={
-            <div onClick={() => this.setState({ backView: false })}>
-              {'This is back view'}
-            </div>
+            <div onClick={() => this.setState({ backView: false })}>{'This is back view'}</div>
           }
         />
       </Column>
-    </Wrapper>;
+    </Wrapper>
+  );
 }
 
 Payment.propTypes = {
-  bitcoinGetRate: PropTypes.func.isRequired,
+  ethereumGetRate: PropTypes.func.isRequired,
   fetching: PropTypes.bool.isRequired,
-  rate: PropTypes.number.isRequired
+  rates: PropTypes.object.isRequired
 };
 
-const reduxProps = ({ bitcoin }) => ({
-  fetching: bitcoin.fetching,
-  rate: bitcoin.rate
+const reduxProps = ({ ethereum }) => ({
+  fetching: ethereum.fetching,
+  rates: ethereum.rates
 });
 
-export default connect(reduxProps, { bitcoinGetRate })(Payment);
+export default connect(reduxProps, { ethereumGetRate })(Payment);

@@ -9,23 +9,14 @@ const api = axios.create({
   timeout: 20000,
   headers: {
     'Content-Type': 'application/json',
-    Accept: 'application/json',
+    Accept: 'application/json'
   }
 });
 
 /**
- * @desc Bitcoin Average Ticker Data
- * @param {String} [code='USD']
+ * @desc Ethereum Rates
+ * @param {String} [native='BTC,USD,EUR,GBP']
  * @return {Promise}
  */
-export const apiGetRate = (code = 'USD') =>
-  api.get(`https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC${code}`);
-
-
-/**
- * @desc Bitoin Average Historical Data
- * @param {String} [code='USD']
- * @return {Promise}
- */
-export const apiGetHistory = (code = 'USD', period = 'monthly') =>
-  api.get(`https://apiv2.bitcoinaverage.com/indices/global/history/BTC${code}?period=${period}`);
+export const apiGetRate = (native = 'BTC,USD,EUR,GBP') =>
+  api.get(`https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=${native}`);

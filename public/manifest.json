@@ -1,6 +1,6 @@
 {
-  "short_name": "BitPay",
-  "name": "BitPay - Crypto Quick Payments",
+  "short_name": "EthPay",
+  "name": "EthPay - Ethereum Quick Payments",
   "icons": [
     {
       "src": "favicon.ico",
