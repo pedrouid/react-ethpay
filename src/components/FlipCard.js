@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { colors, transitions } from '../styles';
+import Card from './Card';
+import { transitions } from '../styles';
 
-const StyledFlipCard = styled.div`
+const StyledFlipCard = styled(Card)`
   transition: ${transitions.base};
-  background: rgba(${colors.white}, 0.05);
-  padding: 50px 20px;
   transform: ${({ invert }) => (invert ? 'rotateY(180deg)' : 'rotateY(0deg)')};
 `;
 
@@ -19,7 +18,11 @@ const StyledFlipCardWrapper = styled.div`
 
 const StyledFlipCardContent = styled.div`
   position: absolute;
+  width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: ${transitions.base};
   opacity: ${({ show }) => (show ? 1 : 0)};
   transform: ${({ show }) => (show ? 'translateY(0)' : 'translateY(15px)')};

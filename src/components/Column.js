@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const StyledColumn = styled.div`
   width: 100%;
   height: 100%;
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -13,9 +13,7 @@ const StyledColumn = styled.div`
 `;
 
 const Column = ({ children, ...otherProps }) => (
-  <StyledColumn {...otherProps}>
-    {children}
-  </StyledColumn>
+  <StyledColumn {...otherProps}>{children}</StyledColumn>
 );
 
 Column.propTypes = {

@@ -22,6 +22,11 @@ const StyledProfile = styled.img`
   border-radius: 50%;
 `;
 
+const StyledInput = styled(Input)`
+  padding-left: 20px;
+  width: 180px;
+`;
+
 const StyledConversion = styled.div`
   font-size: ${fonts.h4};
   opacity: 0.5;
@@ -104,7 +109,12 @@ class Payment extends Component {
             <StyledName>{'Send to Pedro Gomes'}</StyledName>
             <StyledAmount>
               <StyledSymbol>{symbol.ETH}</StyledSymbol>
-              <Input type="text" value={this.state.input} onChange={this.updateInput} />
+              <StyledInput
+                type="text"
+                placeholder="0.00000000"
+                value={this.state.input}
+                onChange={this.updateInput}
+              />
             </StyledAmount>
             <StyledConversion onClick={this.toggleCode}>
               {this.props.fetching ? (

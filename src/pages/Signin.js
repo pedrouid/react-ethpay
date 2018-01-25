@@ -8,11 +8,10 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import Base from '../templates/base';
 import {
-  authSignup,
+  authSignin,
   authClearPasswords,
   authUpdateEmail,
-  authUpdatePassword,
-  authUpdateConfirm
+  authUpdatePassword
 } from '../redux/_auth';
 import { responsive } from '../styles';
 
@@ -35,14 +34,10 @@ const StyledFormSections = styled.div`
   }
 `;
 
-class Signup extends Component {
+class Signin extends Component {
   onSubmit = e => {
     e.preventDefault();
-    if (this.props.password === this.props.confirm) {
-      this.props.authSignup(this.props.email, this.props.password);
-    } else {
-      this.props.authClearPasswords();
-    }
+    this.props.authSignin(this.props.email, this.props.password);
   };
   render() {
     return (
@@ -67,16 +62,7 @@ class Signup extends Component {
                 onChange={({ target }) => this.props.authUpdatePassword(target.value)}
               />
             </StyledFormSections>
-            <StyledFormSections>
-              <StyledLabel>Confirm</StyledLabel>
-              <Input
-                type="password"
-                placeholder="**********"
-                value={this.props.confirm}
-                onChange={({ target }) => this.props.authUpdateConfirm(target.value)}
-              />
-            </StyledFormSections>
-            <Button type="submit">Sign Up</Button>
+            <Button type="submit">Sign In</Button>
           </Form>
         </Card>
       </Base>
@@ -84,29 +70,25 @@ class Signup extends Component {
   }
 }
 
-Signup.propTypes = {
-  authSignup: PropTypes.func.isRequired,
+Signin.propTypes = {
+  authSignin: PropTypes.func.isRequired,
   authClearPasswords: PropTypes.func.isRequired,
   authUpdateEmail: PropTypes.func.isRequired,
   authUpdatePassword: PropTypes.func.isRequired,
-  authUpdateConfirm: PropTypes.func.isRequired,
   fetching: PropTypes.bool.isRequired,
   email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  confirm: PropTypes.string.isRequired
+  password: PropTypes.string.isRequired
 };
 
 const reduxProps = ({ auth }) => ({
   fetching: auth.fetching,
   email: auth.email,
-  password: auth.password,
-  confirm: auth.confirm
+  password: auth.password
 });
 
 export default connect(reduxProps, {
-  authSignup,
+  authSignin,
   authClearPasswords,
   authUpdateEmail,
-  authUpdatePassword,
-  authUpdateConfirm
-})(Signup);
+  authUpdatePassword
+})(Signin);

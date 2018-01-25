@@ -4,13 +4,13 @@ import styled from 'styled-components';
 
 const StyledForm = styled.form`
   width: 100%;
-  padding: 10px;
-  display: block;
-  & > * {
-    margin: 10px auto;
-  }
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
   & button {
-    float: right;
+    margin: 10px auto;
   }
 `;
 

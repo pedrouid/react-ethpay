@@ -46,12 +46,12 @@ export const responsive = {
     max: 'max-width: 480px'
   },
   sm: {
-    min: 'min-width: 767px',
-    max: 'max-width: 768px'
+    min: 'min-width: 639px',
+    max: 'max-width: 640px'
   },
   md: {
-    min: 'min-width: 991px',
-    max: 'max-width: 992px'
+    min: 'min-width: 959px',
+    max: 'max-width: 960px'
   },
   lg: {
     min: 'min-width: 1199px',
@@ -106,11 +106,6 @@ export const globalStyles = `
     text-decoration: none;
     color: inherit;
   }
-
-  div {
-    width: 100%;
-  }
-
   * {
     box-sizing: border-box !important;
   }
